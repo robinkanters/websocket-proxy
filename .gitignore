@@ -1,3 +1,7 @@
+# Ignore hidden files
+.*
+!/.gitignore
+
 # Logs
 logs
 *.log
