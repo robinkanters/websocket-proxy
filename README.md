@@ -1,5 +1,8 @@
 # Web Socket to HTTP proxy
 
+[![Code Climate](https://codeclimate.com/github/robinkanters/websocket-proxy/badges/gpa.svg)](https://codeclimate.com/github/robinkanters/websocket-proxy)
+[![Issue Count](https://codeclimate.com/github/robinkanters/websocket-proxy/badges/issue_count.svg)](https://codeclimate.com/github/robinkanters/websocket-proxy)
+
 NodeJS script to proxy websocket messages to an HTTP endpoint
 
 ## Usage
