@@ -14,7 +14,7 @@ var HTTP_STATUS_OK = 200;
 var HTTP_STATUS_METHOD_NOT_ALLOWED = 405;
 var HTTP_STATUS_INTERNAL_SERVER_ERROR = 500;
 
-if (process.argv.length != 4) {
+if (process.argv.length !== 4) {
     printHelp();
     process.exit();
 }
@@ -32,15 +32,15 @@ socket.on('text', function (data) {
 });
 socket.on('connect', function() {
     setInterval(function() {
-        if(outgoingMessageQueue.length < 1) return;
-
-        var message = outgoingMessageQueue.shift();
-        socket.sendText(message);
+        if(outgoingMessageQueue.length > 0) {
+            var message = outgoingMessageQueue.shift();
+            socket.sendText(message);
+        }
     }, 30);
 });
 
 http.createServer().listen(HTTP_LISTEN_PORT).on('request', function(req, res) {
-    if (req.method != 'POST') {
+    if (req.method !== 'POST') {
         return endConnectionWithStatusCode(res, HTTP_STATUS_METHOD_NOT_ALLOWED);
     }
 
@@ -56,7 +56,7 @@ http.createServer().listen(HTTP_LISTEN_PORT).on('request', function(req, res) {
 
     req.on('error', function () {
         endConnectionWithStatusCode(res, HTTP_STATUS_INTERNAL_SERVER_ERROR);
-    })
+    });
 });
 
 function endConnectionWithStatusCode(res, statusCode) {
