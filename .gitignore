@@ -1,5 +1,6 @@
 # Ignore hidden files
 .*
+!/.codeclimate.yml
 !/.gitignore
 
 # Logs
