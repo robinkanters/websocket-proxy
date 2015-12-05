@@ -19,6 +19,7 @@ if (process.argv.length != 4) {
     process.exit();
 }
 
+var outgoingMessageQueue = [];
 var socket = ws.connect(process.argv[2]);
 socket.on('text', function (data) {
     var url = process.argv[3];
@@ -28,6 +29,14 @@ socket.on('text', function (data) {
     http.get(fullUrl).on('error', function (e) {
         console.log("error " + e.message);
     });
+});
+socket.on('connect', function() {
+    setInterval(function() {
+        if(outgoingMessageQueue.length < 1) return;
+
+        var message = outgoingMessageQueue.shift();
+        socket.sendText(message);
+    }, 30);
 });
 
 http.createServer().listen(HTTP_LISTEN_PORT).on('request', function(req, res) {
@@ -41,8 +50,7 @@ http.createServer().listen(HTTP_LISTEN_PORT).on('request', function(req, res) {
     });
 
     req.on('end', function () {
-        socket.sendText(jsonString);
-
+        outgoingMessageQueue.push(jsonString);
         endConnectionWithStatusCode(res, HTTP_STATUS_OK);
     });
 
